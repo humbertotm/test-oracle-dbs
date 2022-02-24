@@ -1,0 +1,4 @@
+build:
+  docker:
+    appserver-db: Dockerfile-oracle-db
+    dataplex-db: Dockerfile-oracle-db

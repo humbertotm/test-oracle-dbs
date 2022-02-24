@@ -1,0 +1,24 @@
+# Define our Oracle DB base image
+FROM store/oracle/database-enterprise:12.2.0.1 as  oracle-db
+
+COPY scripts/install_rlwrap.sh .
+
+USER root
+RUN ./install_rlwrap.sh
+USER oracle
+
+# Appserver Oracle DB image setup
+FROM oracle-db as appserver-db
+
+COPY scripts/startup_appserver_db.sh .
+COPY appserver.ddl /
+
+CMD ./startup_appserver_db.sh
+
+# Dataplex Oracle DB image setup
+FROM oracle-db as dataplex-db
+
+COPY scripts/startup_dataplex_db.sh .
+COPY dataplex.ddl /
+
+CMD ./startup_dataplex_db.sh
